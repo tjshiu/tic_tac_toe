@@ -2,7 +2,7 @@ var path = require('path');
 
 module.exports = {
   context: __dirname,
-  entry: "./index.jsx",
+  entry: "./frontend/index",
   output: {
     path: path.resolve(__dirname),
     filename: "bundle.js"
@@ -18,6 +18,9 @@ module.exports = {
         }
       }
     ]
+  },
+  node: {
+    fs: 'empty'
   },
   devtool: 'source-map',
   resolve: {
