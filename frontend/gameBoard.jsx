@@ -3,18 +3,18 @@ import TileItem from "./TileItem";
 
 export default class GameBoard extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
 
     render() {
-        const game = this.props.game
-        const board = this.props.board
+        const game = this.props.game;
+        const board = this.props.board;
         let i = -1; 
         const tiles = board.grid.map(row => {
             let j = -1;
-            i += 1;
+            i++;
             return row.map(tile => {
-                j += 1
+                j++;
                 let position = [i, j];
                 return <TileItem  
                     tile={tile}
