@@ -1,14 +1,26 @@
 import React from 'react';
 
 
-const TileItem = ({ tile }) => {
+class TileItem extends React.Component {
+    constructor(props) {
+        super(props)
+        this.playMove = this.playMove.bind(this);
+    }
 
-  return (
-    <li className="square">
-        {tile}
-    </li>
-    );
+    playMove(e) {
+        e.preventDefault();
+        this.props.game.playMove(this.props.pos);
+        this.props.update();
+    }
+    
+    render() {
+        return (
+        <li onClick={this.playMove} className="square">
+            {this.props.tile}
+        </li>
+        );
+    }
+}
 
-};
 
 export default TileItem;

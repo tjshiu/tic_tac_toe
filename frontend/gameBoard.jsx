@@ -1,5 +1,4 @@
 import React from 'react';
-import Game from "./../game/game";
 import TileItem from "./TileItem";
 
 export default class GameBoard extends React.Component {
@@ -8,20 +7,25 @@ export default class GameBoard extends React.Component {
     }
 
     render() {
-        const game = new Game();
-        const board = game.board
+        const game = this.props.game
+        const board = this.props.board
+        let i = -1; 
         const tiles = board.grid.map(row => {
+            let j = -1;
+            i += 1;
             return row.map(tile => {
-                 return <TileItem  
+                j += 1
+                let position = [i, j];
+                return <TileItem  
                     tile={tile}
+                    key={`tile-${position}`}
+                    pos={position}
+                    game={game}
+                    update={this.props.update}
                 />
             })
         });
 
-        console.log(tiles)
-        
-
-        console.log(tiles)
 
         return(
             <div>
