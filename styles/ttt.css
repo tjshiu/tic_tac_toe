@@ -14,10 +14,11 @@ div {
   padding: 10px 20px 10px 20px;
   border-radius: 5px;
   font-size: 20px;
+  outline: none;
 }
 
-.ttt-container button {
-  outline: none;
+.ttt-container button:hover {
+  background-color: lightgray;
 }
 
 h1 {
