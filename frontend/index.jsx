@@ -9,8 +9,9 @@ class Root extends React.Component {
         this.startGame = this.startGame.bind(this);
         let game = new Game();
         let board = game.board;
-
-        this.state = {'game': game, 'board': board}
+        let over = game.isOver();
+        let winner = game.winner();
+        this.state = {game, board, over, winner}
         this.updateBoard = this.updateBoard.bind(this);
     }
 
@@ -18,19 +19,35 @@ class Root extends React.Component {
         e.preventDefault();
         let game = new Game();
         let board = game.board
-        this.setState({'game': game, 'board': board})
+        let over = game.isOver();
+        let winner = game.winner();
+        this.setState({game, board, over, winner})
     }
 
     updateBoard() {
-        this.setState({'board': this.state.game.board})
+        let game = this.state.game
+        let board = game.board;
+        let over = game.isOver();
+        let winner = game.winner();
+        this.setState({board, over, winner})
     }
 
     render() {
         return (
-            <div>
+            <div className="ttt-container">
                 <h1>Tic Tac Toe</h1>
                 <button onClick={this.startGame}> New Game</button>
-                <GameBoard game={this.state.game} board={this.state.board} update={this.updateBoard} />
+                <GameBoard 
+                    game={this.state.game} 
+                    board={this.state.board} 
+                    update={this.updateBoard} 
+                    over={this.state.over}
+                />
+                {this.state.over === false ? null : (
+                    this.state.winner === null ? <h2>Game Over</h2> :(
+                        <h2>{`${this.state.winner} Wins!`}</h2>
+                    )
+                )}
             </div>
         );
     }

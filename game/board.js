@@ -36,21 +36,6 @@ class Board {
     return true;
   }
 
-  print() {
-    const strs = [];
-    for (let rowIdx = 0; rowIdx < 3; rowIdx++) {
-      const marks = [];
-      for (let colIdx = 0; colIdx < 3; colIdx++) {
-        marks.push(
-          this.grid[rowIdx][colIdx] ? this.grid[rowIdx][colIdx] : " "
-        );
-      }
-      strs.push(`${marks.join('|')}\n`);
-    }
-
-    console.log(strs.join('-----\n'));
-  }
-
   winner() {
     const posSeqs = [
       // horizontals
@@ -118,6 +103,6 @@ class Board {
   }
 }
 
-Board.marks = ['x', 'o'];
+Board.marks = ['X', 'O'];
 
 module.exports = Board;

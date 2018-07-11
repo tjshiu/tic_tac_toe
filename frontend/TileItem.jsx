@@ -9,8 +9,10 @@ class TileItem extends React.Component {
 
     playMove(e) {
         e.preventDefault();
-        this.props.game.playMove(this.props.pos);
-        this.props.update();
+        if (!this.props.over) {
+            this.props.game.playMove(this.props.pos);
+            this.props.update();
+        }
     }
     
     render() {

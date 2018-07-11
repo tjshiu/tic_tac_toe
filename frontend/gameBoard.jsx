@@ -22,6 +22,7 @@ export default class GameBoard extends React.Component {
                     pos={position}
                     game={game}
                     update={this.props.update}
+                    over={this.props.over}
                 />
             })
         });
