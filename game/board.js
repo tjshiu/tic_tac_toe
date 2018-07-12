@@ -5,7 +5,7 @@ class Board {
 
   isEmptyPos(pos) {
     if (!Board.isValidPos(pos)) {
-      throw new MoveError('Is not valid position!');
+      return false;
     }
 
     return (this.grid[pos[0]][pos[1]] === null);

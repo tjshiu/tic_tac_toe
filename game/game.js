@@ -1,22 +1,17 @@
 const Board = require("./board");
 
 class Game {
-  constructor() {
+  constructor(player1, player2) {
     this.board = new Board();
     this.currentPlayer = Board.marks[0];
-    // this.players = {"X": player1, "O": player2}
+    this.players = {"X": player1, "O": player2}
+    console.log(this.board.grid);
   }
 
-  run() {
-    while (!this.isOver()) {
-      this.play_turn();
-    }
-  }
-
-  playTurn(position) {
+  ComputerPlayTurn() {
     while (true) {
       let current_player = this.players[this.currentPlayer];
-      let pos = position || current_player.move(this, this.currentPlayer)
+      let pos = current_player.move(this, this.currentPlayer)
 
       if (this.playMove(pos)) break;
     }
