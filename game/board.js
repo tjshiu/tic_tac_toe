@@ -28,6 +28,7 @@ class Board {
   }
 
   placeMark(pos, mark) {
+    if (pos === null) return false;
     if (!this.isEmptyPos(pos)) return false;
     
     this.grid[pos[0]][pos[1]] = mark;

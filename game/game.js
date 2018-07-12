@@ -4,6 +4,22 @@ class Game {
   constructor() {
     this.board = new Board();
     this.currentPlayer = Board.marks[0];
+    // this.players = {"X": player1, "O": player2}
+  }
+
+  run() {
+    while (!this.isOver()) {
+      this.play_turn();
+    }
+  }
+
+  playTurn(position) {
+    while (true) {
+      let current_player = this.players[this.currentPlayer];
+      let pos = position || current_player.move(this, this.currentPlayer)
+
+      if (this.playMove(pos)) break;
+    }
   }
 
   isOver() {
@@ -12,7 +28,11 @@ class Game {
 
   playMove(pos) {
     let marked = this.board.placeMark(pos, this.currentPlayer);
-    if (marked) this.swapTurn();
+    if (marked) {
+      this.swapTurn();
+      return true;
+    }
+    return false;
   }
 
   swapTurn() {
