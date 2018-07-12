@@ -1,10 +1,11 @@
 const Board = require("./board");
 
 class Game {
-  constructor(player1, player2) {
+  constructor(player1, player2, computer = false) {
     this.board = new Board();
     this.currentPlayer = Board.marks[0];
     this.players = {"X": player1, "O": player2}
+    this.computer = computer; //If there is a computer player or not
     console.log(this.board.grid);
   }
 
@@ -39,7 +40,10 @@ class Game {
   }
 
   winner() {
-    return this.board.winner();
+    let winnerSymbol = this.board.winner()
+    let winner = this.players[winnerSymbol]
+    if (winner === undefined) return null;
+    return winner.name;
   }
 }
 

@@ -12,12 +12,14 @@ class TileItem extends React.Component {
         if (!this.props.over) {
             this.props.game.playMove(this.props.pos);
             this.props.update();
-            setTimeout(() => {
-                if (!this.props.over) {
-                    this.props.game.ComputerPlayTurn();
-                    this.props.update();
-                }
-            }, 300);
+            if (this.props.game.computer) {
+                setTimeout(() => {
+                    if (!this.props.over) {
+                        this.props.game.ComputerPlayTurn();
+                        this.props.update();
+                    }
+                }, 300);
+            }
         }
     }
     

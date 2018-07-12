@@ -2,34 +2,45 @@ import React from "react";
 import ReactDOM from "react-dom";
 import GameBoard from "./GameBoard";
 import Game from "./../game/game";
-import Computer from "./../game/basicAI";
+import BasicComputer from "./../game/basicAI";
+import HumanPlayer from "./../game/humanPlayer";
 
 class Root extends React.Component {
     constructor(props) {
         super(props);
-        let player1 = new Computer();
-        let game = new Game(null, player1);
+        let player1 = new BasicComputer();
+        let player2 = new HumanPlayer();
+        let game = new Game(player2, player1, true);
         let board = game.board;
         let over = game.isOver();
         let winner = game.winner();
         this.state = {game, board, over, winner}
-        this.restartGame = this.restartGame.bind(this);
         this.updateBoard = this.updateBoard.bind(this);
-        this.start = this.start.bind(this);
+        this.newGame = this.newGame.bind(this);
+        this.basicComp = this.basicComp.bind(this);
+        this.human = this.human.bind(this);
     }
 
-    restartGame(e) {
-        e.preventDefault();
-        let game = new Game();
+    newGame(player1, player2, hasComputer) {
+        let game = new Game(player1, player2, hasComputer);
         let board = game.board
         let over = game.isOver();
         let winner = game.winner();
         this.setState({game, board, over, winner})
     }
-    
-    start(e) {
+
+    basicComp(e) {
         e.preventDefault();
-        this.state.game.run();
+        let player1 = new HumanPlayer();
+        let player2 = new BasicComputer();
+        this.newGame(player1, player2, true);
+    }
+    
+    human(e) {
+        e.preventDefault();
+        let player1 = new HumanPlayer("X or Player 1");
+        let player2 = new HumanPlayer("O or Player 2");
+        this.newGame(player1, player2, false);
     }
 
     updateBoard() {
@@ -44,8 +55,8 @@ class Root extends React.Component {
         return (
             <div className="ttt-container">
                 <h1>Tic Tac Toe</h1>
-                <button onClick={this.restartGame}> New Game</button>
-                <button onClick={this.start}> Start</button>
+                <button onClick={this.basicComp}>Player vs Basic Computer</button>
+                <button onClick={this.human}>Player vs Player</button>
                 <GameBoard 
                     game={this.state.game} 
                     board={this.state.board} 
@@ -54,7 +65,7 @@ class Root extends React.Component {
                 />
                 {this.state.over === false ? null : (
                     this.state.winner === null ? <h2>Game Over</h2> :(
-                        <h2>{`${this.state.winner} Wins!`}</h2>
+                        <h2>{`${this.state.winner} Won!`}</h2>
                     )
                 )}
             </div>
