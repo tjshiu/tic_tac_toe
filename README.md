@@ -2,4 +2,10 @@
 
 There are different ways that you can play the game. There is a player vs player aspect. Also there is a Player vs Basic Computer aspect. 
 
+### Technologies
+
+- React for frontend rendering
+- Babel
+- Cloner
+- Webpack
 
