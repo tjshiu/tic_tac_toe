@@ -1,12 +1,11 @@
 const Board = require("./board");
 
 class Game {
-  constructor(player1, player2, computer = false) {
+  constructor(player1, player2, hasComputer = false) {
     this.board = new Board();
     this.currentPlayer = Board.marks[0];
     this.players = {"X": player1, "O": player2}
-    this.computer = computer; //If there is a computer player or not
-    console.log(this.board.grid);
+    this.computer = hasComputer; //If there is a computer player or not
   }
 
   ComputerPlayTurn() {

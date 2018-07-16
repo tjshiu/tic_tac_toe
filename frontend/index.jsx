@@ -38,8 +38,8 @@ class Root extends React.Component {
     
     human(e) {
         e.preventDefault();
-        let player1 = new HumanPlayer("X or Player 1");
-        let player2 = new HumanPlayer("O or Player 2");
+        let player1 = new HumanPlayer("Player 1");
+        let player2 = new HumanPlayer("Player 2");
         this.newGame(player1, player2, false);
     }
 
@@ -56,7 +56,7 @@ class Root extends React.Component {
             <div className="ttt-container">
                 <h1>Tic Tac Toe</h1>
                 <button onClick={this.basicComp}>Player vs Basic Computer</button>
-                <button onClick={this.human}>Player vs Player</button>
+                <button onClick={this.human}>Player 1 vs Player 2</button>
                 <GameBoard 
                     game={this.state.game} 
                     board={this.state.board} 
