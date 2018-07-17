@@ -958,19 +958,18 @@ var Root = function (_React$Component) {
                 "div",
                 { className: "ttt-container" },
                 _react2.default.createElement(
-                    "h1",
-                    null,
-                    "Tic Tac Toe"
-                ),
-                _react2.default.createElement(
-                    "button",
-                    { onClick: this.basicComp },
-                    "Player vs Basic Computer"
-                ),
-                _react2.default.createElement(
-                    "button",
-                    { onClick: this.human },
-                    "Player 1 vs Player 2"
+                    "div",
+                    { className: "buttons" },
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: this.basicComp },
+                        "Player vs Basic Computer"
+                    ),
+                    _react2.default.createElement(
+                        "button",
+                        { onClick: this.human },
+                        "Player 1 vs Player 2"
+                    )
                 ),
                 _react2.default.createElement(_GameBoard2.default, {
                     game: this.state.game,

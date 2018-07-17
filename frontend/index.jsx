@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import GameBoard from "./GameBoard";
-import Game from "./../game/game";
-import BasicComputer from "./../game/basicAI";
-import HumanPlayer from "./../game/humanPlayer";
+import Game from "./../lib/game";
+import BasicComputer from "./../lib/basicAI";
+import HumanPlayer from "./../lib/humanPlayer";
 
 class Root extends React.Component {
     constructor(props) {
@@ -54,9 +54,10 @@ class Root extends React.Component {
     render() {
         return (
             <div className="ttt-container">
-                <h1>Tic Tac Toe</h1>
-                <button onClick={this.basicComp}>Player vs Basic Computer</button>
-                <button onClick={this.human}>Player 1 vs Player 2</button>
+                <div className="buttons">
+                    <button onClick={this.basicComp}>Player vs Basic Computer</button>
+                    <button onClick={this.human}>Player 1 vs Player 2</button>
+                </div>
                 <GameBoard 
                     game={this.state.game} 
                     board={this.state.board} 

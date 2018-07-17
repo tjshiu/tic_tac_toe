@@ -25,7 +25,7 @@ h1 {
     align-items: center;
     justify-content: center;
     display: flex;
-    font-size: 70px;
+    font-size: 50px;
     font-family: 'Kumar One Outline', cursive;
     margin: 0px;
   }
@@ -61,4 +61,24 @@ ul {
   li:hover {
     background-color: #EB5160;
     cursor: pointer;
+  }
+
+  img {
+    height: 50px;
+  }
+  
+  nav {
+    border-bottom: 1px solid lightgrey;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    background-color: white;
+    padding-top: 15px;
+  }
+
+  .buttons {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
