@@ -1,4 +1,4 @@
-# Welcome to my Tic Tac Toe Game - Tiffany Shiu
+# Welcome to my Tic Tac Toe Game 
 
 [Live](https://tjshiu.github.io/tic_tac_toe/)
 
