@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import GameBoard from "./GameBoard";
 import Game from "./../lib/game";
 import BasicComputer from "./../lib/basicAI";
+import AdvanceComputer from "./../lib/advanceAI";
 import HumanPlayer from "./../lib/humanPlayer";
 
 class Root extends React.Component {
@@ -18,6 +19,7 @@ class Root extends React.Component {
         this.updateBoard = this.updateBoard.bind(this);
         this.newGame = this.newGame.bind(this);
         this.basicComp = this.basicComp.bind(this);
+        this.advanceComp = this.advanceComp.bind(this);
         this.human = this.human.bind(this);
     }
 
@@ -27,6 +29,13 @@ class Root extends React.Component {
         let over = game.isOver();
         let winner = game.winner();
         this.setState({game, board, over, winner})
+    }
+
+    advanceComp(e) {
+        e.preventDefault();
+        let player1 = new HumanPlayer();
+        let player2 = new AdvanceComputer();
+        this.newGame(player1, player2, true);
     }
 
     basicComp(e) {
@@ -55,9 +64,11 @@ class Root extends React.Component {
         return (
             <div className="ttt-container">
                 <div className="buttons">
+                    <button onClick={this.advanceComp}> Player vs Advanced Computer</button>
                     <button onClick={this.basicComp}>Player vs Basic Computer</button>
                     <button onClick={this.human}>Player 1 vs Player 2</button>
                 </div>
+                
                 <GameBoard 
                     game={this.state.game} 
                     board={this.state.board} 
