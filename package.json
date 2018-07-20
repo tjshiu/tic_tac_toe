@@ -25,6 +25,7 @@
     "babel-preset-react": "^6.24.1",
     "cloner": "^0.4.0",
     "lodash.maxby": "^4.6.0",
+    "lodash.minby": "^4.6.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "webpack": "^3.12.0"
