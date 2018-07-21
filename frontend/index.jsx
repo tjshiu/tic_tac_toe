@@ -11,11 +11,12 @@ class Root extends React.Component {
         super(props);
         let player1 = new BasicComputer();
         let player2 = new HumanPlayer();
-        let game = new Game(player2, player1, true);
+        let game = new Game(player2, player1, true, "BC");
         let board = game.board;
         let over = game.isOver();
         let winner = game.winner();
-        this.state = {game, board, over, winner}
+        let type = game.type
+        this.state = {game, board, over, winner, type}
         this.updateBoard = this.updateBoard.bind(this);
         this.newGame = this.newGame.bind(this);
         this.basicComp = this.basicComp.bind(this);
@@ -23,33 +24,33 @@ class Root extends React.Component {
         this.human = this.human.bind(this);
     }
 
-    newGame(player1, player2, hasComputer) {
-        let game = new Game(player1, player2, hasComputer);
+    newGame(player1, player2, hasComputer, type) {
+        let game = new Game(player1, player2, hasComputer, type);
         let board = game.board
         let over = game.isOver();
         let winner = game.winner();
-        this.setState({game, board, over, winner})
+        this.setState({game, board, over, winner, type})
     }
 
     advanceComp(e) {
         e.preventDefault();
         let player1 = new HumanPlayer();
         let player2 = new AdvanceComputer();
-        this.newGame(player1, player2, true);
+        this.newGame(player1, player2, true, "AC");
     }
 
     basicComp(e) {
         e.preventDefault();
         let player1 = new HumanPlayer();
         let player2 = new BasicComputer();
-        this.newGame(player1, player2, true);
+        this.newGame(player1, player2, true, "BC");
     }
     
     human(e) {
         e.preventDefault();
         let player1 = new HumanPlayer("Player 1");
         let player2 = new HumanPlayer("Player 2");
-        this.newGame(player1, player2, false);
+        this.newGame(player1, player2, false, "PP");
     }
 
     updateBoard() {
@@ -64,9 +65,21 @@ class Root extends React.Component {
         return (
             <div className="ttt-container">
                 <div className="buttons">
-                    <button onClick={this.advanceComp}> Player vs Advanced Computer</button>
-                    <button onClick={this.basicComp}>Player vs Basic Computer</button>
-                    <button onClick={this.human}>Player 1 vs Player 2</button>
+                    <button 
+                        className = {this.state.type === "AC" ? "active" : ""}
+                        onClick={this.advanceComp}> 
+                        Player <div />vs<div /> Advanced Computer
+                    </button>
+                    <button 
+                        className = {this.state.type === "BC" ? "active" : ""}
+                        onClick={this.basicComp}>
+                        Player vs Basic Computer
+                    </button>
+                    <button 
+                        className = {this.state.type === "PP" ? "active" : ""}
+                        onClick={this.human}>
+                        Player 1 vs Player 2
+                    </button>
                 </div>
                 
                 <GameBoard 

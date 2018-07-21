@@ -1,25 +1,32 @@
 div {
     font-size: 20px;
-}
+  }
+  
+  .ttt-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .ttt-container button {
+    margin: 10px;
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+    font-size: 20px;
+    outline: none;
+    width: 250px;
+  }
+  
+  .ttt-container button:hover {
+    background-color: lightgray;
+    border: 1px solid black;
+    cursor: pointer;
+  }
 
-.ttt-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.ttt-container button {
-  margin: 10px;
-  padding: 10px 20px 10px 20px;
-  border-radius: 5px;
-  font-size: 20px;
-  outline: none;
-}
-
-.ttt-container button:hover {
-  background-color: lightgray;
-}
+  .active {
+    background-color: lightgrey;
+  }
 
 h1 {
     align-items: center;
