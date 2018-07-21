@@ -68,7 +68,7 @@ class Root extends React.Component {
                     <button 
                         className = {this.state.type === "AC" ? "active" : ""}
                         onClick={this.advanceComp}> 
-                        Player <div />vs<div /> Advanced Computer
+                        Player <div />vs<div /> Advance Computer
                     </button>
                     <button 
                         className = {this.state.type === "BC" ? "active" : ""}
