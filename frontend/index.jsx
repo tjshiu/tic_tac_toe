@@ -73,12 +73,12 @@ class Root extends React.Component {
                     <button 
                         className = {this.state.type === "BC" ? "active" : ""}
                         onClick={this.basicComp}>
-                        Player vs Basic Computer
+                        Player <div/>vs<div/> Basic Computer
                     </button>
                     <button 
                         className = {this.state.type === "PP" ? "active" : ""}
                         onClick={this.human}>
-                        Player 1 vs Player 2
+                        Player 1 <div/>vs<div/> Player 2
                     </button>
                 </div>
                 
