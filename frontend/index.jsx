@@ -65,11 +65,7 @@ class Root extends React.Component {
         return (
             <div className="ttt-container">
                 <div className="buttons">
-                    <button 
-                        className = {this.state.type === "AC" ? "active" : ""}
-                        onClick={this.advanceComp}> 
-                        Player <div /> vs <div />Advance Computer
-                    </button>
+                
                     <button 
                         className = {this.state.type === "BC" ? "active" : ""}
                         onClick={this.basicComp}>
