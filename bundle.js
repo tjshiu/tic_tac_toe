@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -258,21 +258,6 @@ process.umask = function() { return 0; };
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(16);
-} else {
-  module.exports = __webpack_require__(17);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 
 
 /**
@@ -311,7 +296,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -408,7 +393,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -468,7 +453,7 @@ module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -492,6 +477,21 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(13);
+} else {
+  module.exports = __webpack_require__(14);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -506,7 +506,7 @@ module.exports = emptyObject;
 
 
 
-var emptyFunction = __webpack_require__(2);
+var emptyFunction = __webpack_require__(1);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -577,7 +577,7 @@ module.exports = warning;
 var printWarning = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactPropTypesSecret = __webpack_require__(18);
+  var ReactPropTypesSecret = __webpack_require__(15);
   var loggedTypeFailures = {};
 
   printWarning = function(text) {
@@ -827,7 +827,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(21);
+var isTextNode = __webpack_require__(18);
 
 /*eslint-disable no-bitwise */
 
@@ -856,265 +856,6 @@ module.exports = containsNode;
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports) {
-
-/*!
-Copyright (C) 2015 by Andrea Giammarchi - @WebReflection
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-*/
-var cloner = (function (O) {'use strict';
-
-  // (C) Andrea Giammarchi - Mit Style
-
-  var
-
-    // constants
-    VALUE   = 'value',
-    PROTO   = '__proto__', // to avoid jshint complains
-
-    // shortcuts
-    isArray = Array.isArray,
-    create  = O.create,
-    dP      = O.defineProperty,
-    dPs     = O.defineProperties,
-    gOPD    = O.getOwnPropertyDescriptor,
-    gOPN    = O.getOwnPropertyNames,
-    gOPS    = O.getOwnPropertySymbols ||
-              function (o) { return Array.prototype; },
-    gPO     = O.getPrototypeOf ||
-              function (o) { return o[PROTO]; },
-    hOP     = O.prototype.hasOwnProperty,
-    oKs     = (typeof Reflect !== typeof oK) &&
-              Reflect.ownKeys ||
-              function (o) { return gOPS(o).concat(gOPN(o)); },
-    set     = function (descriptors, key, descriptor) {
-      if (key in descriptors) dP(descriptors, key, {
-        configurable: true,
-        enumerable: true,
-        value: descriptor
-      });
-      else descriptors[key] = descriptor;
-    },
-
-    // used to avoid recursions in deep copy
-    index   = -1,
-    known   = null,
-    blown   = null,
-    clean   = function () { known = blown = null; },
-
-    // utilities
-    New = function (source, descriptors) {
-      var out = isArray(source) ? [] : create(gPO(source));
-      return descriptors ? Object.defineProperties(out, descriptors) : out;
-    },
-
-    // deep copy and merge
-    deepCopy = function deepCopy(source) {
-      var result = New(source);
-      known = [source];
-      blown = [result];
-      deepDefine(result, source);
-      clean();
-      return result;
-    },
-    deepMerge = function (target) {
-      known = [];
-      blown = [];
-      for (var i = 1; i < arguments.length; i++) {
-        known[i - 1] = arguments[i];
-        blown[i - 1] = target;
-      }
-      merge.apply(true, arguments);
-      clean();
-      return target;
-    },
-
-    // shallow copy and merge
-    shallowCopy = function shallowCopy(source) {
-      clean();
-      for (var
-        key,
-        descriptors = {},
-        keys = oKs(source),
-        i = keys.length; i--;
-        set(descriptors, key, gOPD(source, key))
-      ) key = keys[i];
-      return New(source, descriptors);
-    },
-    shallowMerge = function () {
-      clean();
-      return merge.apply(false, arguments);
-    },
-
-    // internal methods
-    isObject = function isObject(value) {
-      /*jshint eqnull: true */
-      return value != null && typeof value === 'object';
-    },
-    shouldCopy = function shouldCopy(value) {
-      /*jshint eqnull: true */
-      index = -1;
-      if (isObject(value)) {
-        if (known == null) return true;
-        index = known.indexOf(value);
-        if (index < 0) return 0 < known.push(value);
-      }
-      return false;
-    },
-    deepDefine = function deepDefine(target, source) {
-      for (var
-        key, descriptor,
-        descriptors = {},
-        keys = oKs(source),
-        i = keys.length; i--;
-      ) {
-        key = keys[i];
-        descriptor = gOPD(source, key);
-        if (VALUE in descriptor) deepValue(descriptor);
-        set(descriptors, key, descriptor);
-      }
-      dPs(target, descriptors);
-    },
-    deepValue = function deepValue(descriptor) {
-      var value = descriptor[VALUE];
-      if (shouldCopy(value)) {
-        descriptor[VALUE] = New(value);
-        deepDefine(descriptor[VALUE], value);
-        blown[known.indexOf(value)] = descriptor[VALUE];
-      } else if (-1 < index && index in blown) {
-        descriptor[VALUE] = blown[index];
-      }
-    },
-    merge = function merge(target) {
-      for (var
-        source,
-        keys, key,
-        value, tvalue,
-        descriptor,
-        deep = this.valueOf(),
-        descriptors = {},
-        i, a = 1;
-        a < arguments.length; a++
-      ) {
-        source = arguments[a];
-        keys = oKs(source);
-        for (i = 0; i < keys.length; i++) {
-          key = keys[i];
-          descriptor = gOPD(source, key);
-          if (hOP.call(target, key)) {
-            if (VALUE in descriptor) {
-              value = descriptor[VALUE];
-              if (shouldCopy(value)) {
-                descriptor = gOPD(target, key);
-                if (VALUE in descriptor) {
-                  tvalue = descriptor[VALUE];
-                  if (isObject(tvalue)) {
-                    merge.call(deep, tvalue, value);
-                  }
-                }
-              }
-            }
-          } else {
-            if (deep && VALUE in descriptor) {
-              deepValue(descriptor);
-            }
-            set(descriptors, key, descriptor);
-          }
-        }
-      }
-      return dPs(target, descriptors);
-    }
-  ;
-
-  return {
-    deep: {
-      copy: deepCopy,
-      merge: deepMerge
-    },
-    shallow: {
-      copy: shallowCopy,
-      merge: shallowMerge
-    }
-  };
-
-}(Object));
-module.exports = cloner;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1122,11 +863,11 @@ module.exports = function(module) {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(19);
+var _reactDom = __webpack_require__(16);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -1240,9 +981,9 @@ var Root = function (_React$Component) {
                             onClick: this.advanceComp },
                         "Player ",
                         _react2.default.createElement("div", null),
-                        "vs",
+                        " vs ",
                         _react2.default.createElement("div", null),
-                        " Advanced Computer"
+                        " Advance Computer"
                     ),
                     _react2.default.createElement(
                         "button",
@@ -1251,7 +992,7 @@ var Root = function (_React$Component) {
                             onClick: this.basicComp },
                         "Player ",
                         _react2.default.createElement("div", null),
-                        "vs",
+                        " vs ",
                         _react2.default.createElement("div", null),
                         " Basic Computer"
                     ),
@@ -1262,7 +1003,7 @@ var Root = function (_React$Component) {
                             onClick: this.human },
                         "Player 1 ",
                         _react2.default.createElement("div", null),
-                        "vs",
+                        " vs ",
                         _react2.default.createElement("div", null),
                         " Player 2"
                     )
@@ -1294,7 +1035,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /***/ }),
-/* 16 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1307,7 +1048,7 @@ document.addEventListener("DOMContentLoaded", function () {
  * LICENSE file in the root directory of this source tree.
  */
 
-var k=__webpack_require__(3),n=__webpack_require__(4),p=__webpack_require__(5),q=__webpack_require__(2),r="function"===typeof Symbol&&Symbol.for,t=r?Symbol.for("react.element"):60103,u=r?Symbol.for("react.portal"):60106,v=r?Symbol.for("react.fragment"):60107,w=r?Symbol.for("react.strict_mode"):60108,x=r?Symbol.for("react.profiler"):60114,y=r?Symbol.for("react.provider"):60109,z=r?Symbol.for("react.context"):60110,A=r?Symbol.for("react.async_mode"):60111,B=
+var k=__webpack_require__(2),n=__webpack_require__(3),p=__webpack_require__(4),q=__webpack_require__(1),r="function"===typeof Symbol&&Symbol.for,t=r?Symbol.for("react.element"):60103,u=r?Symbol.for("react.portal"):60106,v=r?Symbol.for("react.fragment"):60107,w=r?Symbol.for("react.strict_mode"):60108,x=r?Symbol.for("react.profiler"):60114,y=r?Symbol.for("react.provider"):60109,z=r?Symbol.for("react.context"):60110,A=r?Symbol.for("react.async_mode"):60111,B=
 r?Symbol.for("react.forward_ref"):60112;r&&Symbol.for("react.timeout");var C="function"===typeof Symbol&&Symbol.iterator;function D(a){for(var b=arguments.length-1,e="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=0;c<b;c++)e+="&args[]="+encodeURIComponent(arguments[c+1]);n(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",e)}
 var E={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function F(a,b,e){this.props=a;this.context=b;this.refs=p;this.updater=e||E}F.prototype.isReactComponent={};F.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?D("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};F.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};function G(){}
 G.prototype=F.prototype;function H(a,b,e){this.props=a;this.context=b;this.refs=p;this.updater=e||E}var I=H.prototype=new G;I.constructor=H;k(I,F.prototype);I.isPureReactComponent=!0;var J={current:null},K=Object.prototype.hasOwnProperty,L={key:!0,ref:!0,__self:!0,__source:!0};
@@ -1323,7 +1064,7 @@ assign:k}},Y={default:X},Z=Y&&X||Y;module.exports=Z.default?Z.default:Z;
 
 
 /***/ }),
-/* 17 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1344,11 +1085,11 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(3);
-var invariant = __webpack_require__(4);
-var emptyObject = __webpack_require__(5);
+var _assign = __webpack_require__(2);
+var invariant = __webpack_require__(3);
+var emptyObject = __webpack_require__(4);
 var warning = __webpack_require__(6);
-var emptyFunction = __webpack_require__(2);
+var emptyFunction = __webpack_require__(1);
 var checkPropTypes = __webpack_require__(7);
 
 // TODO: this is special because it gets imported during build.
@@ -2817,7 +2558,7 @@ module.exports = react;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 18 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2836,7 +2577,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 19 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2874,15 +2615,15 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(20);
+  module.exports = __webpack_require__(17);
 } else {
-  module.exports = __webpack_require__(23);
+  module.exports = __webpack_require__(20);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 20 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2898,7 +2639,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(4),ba=__webpack_require__(1),m=__webpack_require__(8),p=__webpack_require__(3),v=__webpack_require__(2),da=__webpack_require__(9),ea=__webpack_require__(10),fa=__webpack_require__(11),ha=__webpack_require__(5);
+var aa=__webpack_require__(3),ba=__webpack_require__(5),m=__webpack_require__(8),p=__webpack_require__(2),v=__webpack_require__(1),da=__webpack_require__(9),ea=__webpack_require__(10),fa=__webpack_require__(11),ha=__webpack_require__(4);
 function A(a){for(var b=arguments.length-1,c="https://reactjs.org/docs/error-decoder.html?invariant="+a,d=0;d<b;d++)c+="&args[]="+encodeURIComponent(arguments[d+1]);aa(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",c)}ba?void 0:A("227");
 function ia(a,b,c,d,e,f,g,h,k){this._hasCaughtError=!1;this._caughtError=null;var n=Array.prototype.slice.call(arguments,3);try{b.apply(c,n)}catch(r){this._caughtError=r,this._hasCaughtError=!0}}
 var B={_caughtError:null,_hasCaughtError:!1,_rethrowError:null,_hasRethrowError:!1,invokeGuardedCallback:function(a,b,c,d,e,f,g,h,k){ia.apply(B,arguments)},invokeGuardedCallbackAndCatchFirstError:function(a,b,c,d,e,f,g,h,k){B.invokeGuardedCallback.apply(this,arguments);if(B.hasCaughtError()){var n=B.clearCaughtError();B._hasRethrowError||(B._hasRethrowError=!0,B._rethrowError=n)}},rethrowCaughtError:function(){return ka.apply(B,arguments)},hasCaughtError:function(){return B._hasCaughtError},clearCaughtError:function(){if(B._hasCaughtError){var a=
@@ -3129,7 +2870,7 @@ var Ai={default:vi},Bi=Ai&&vi||Ai;module.exports=Bi.default?Bi.default:Bi;
 
 
 /***/ }),
-/* 21 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3144,7 +2885,7 @@ var Ai={default:vi},Bi=Ai&&vi||Ai;module.exports=Bi.default?Bi.default:Bi;
  * @typechecks
  */
 
-var isNode = __webpack_require__(22);
+var isNode = __webpack_require__(19);
 
 /**
  * @param {*} object The object to check.
@@ -3157,7 +2898,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 22 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3185,7 +2926,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 23 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3206,19 +2947,19 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var invariant = __webpack_require__(4);
-var React = __webpack_require__(1);
+var invariant = __webpack_require__(3);
+var React = __webpack_require__(5);
 var warning = __webpack_require__(6);
 var ExecutionEnvironment = __webpack_require__(8);
-var _assign = __webpack_require__(3);
-var emptyFunction = __webpack_require__(2);
+var _assign = __webpack_require__(2);
+var emptyFunction = __webpack_require__(1);
 var checkPropTypes = __webpack_require__(7);
 var getActiveElement = __webpack_require__(9);
 var shallowEqual = __webpack_require__(10);
 var containsNode = __webpack_require__(11);
-var emptyObject = __webpack_require__(5);
-var hyphenateStyleName = __webpack_require__(24);
-var camelizeStyleName = __webpack_require__(26);
+var emptyObject = __webpack_require__(4);
+var hyphenateStyleName = __webpack_require__(21);
+var camelizeStyleName = __webpack_require__(23);
 
 // Relying on the `invariant()` implementation lets us
 // have preserve the format and params in the www builds.
@@ -20623,7 +20364,7 @@ module.exports = reactDom;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 24 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20638,7 +20379,7 @@ module.exports = reactDom;
 
 
 
-var hyphenate = __webpack_require__(25);
+var hyphenate = __webpack_require__(22);
 
 var msPattern = /^ms-/;
 
@@ -20665,7 +20406,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 25 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20701,7 +20442,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 26 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20716,7 +20457,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(27);
+var camelize = __webpack_require__(24);
 
 var msPattern = /^-ms-/;
 
@@ -20744,7 +20485,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 27 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20779,6 +20520,265 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+/*!
+Copyright (C) 2015 by Andrea Giammarchi - @WebReflection
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/
+var cloner = (function (O) {'use strict';
+
+  // (C) Andrea Giammarchi - Mit Style
+
+  var
+
+    // constants
+    VALUE   = 'value',
+    PROTO   = '__proto__', // to avoid jshint complains
+
+    // shortcuts
+    isArray = Array.isArray,
+    create  = O.create,
+    dP      = O.defineProperty,
+    dPs     = O.defineProperties,
+    gOPD    = O.getOwnPropertyDescriptor,
+    gOPN    = O.getOwnPropertyNames,
+    gOPS    = O.getOwnPropertySymbols ||
+              function (o) { return Array.prototype; },
+    gPO     = O.getPrototypeOf ||
+              function (o) { return o[PROTO]; },
+    hOP     = O.prototype.hasOwnProperty,
+    oKs     = (typeof Reflect !== typeof oK) &&
+              Reflect.ownKeys ||
+              function (o) { return gOPS(o).concat(gOPN(o)); },
+    set     = function (descriptors, key, descriptor) {
+      if (key in descriptors) dP(descriptors, key, {
+        configurable: true,
+        enumerable: true,
+        value: descriptor
+      });
+      else descriptors[key] = descriptor;
+    },
+
+    // used to avoid recursions in deep copy
+    index   = -1,
+    known   = null,
+    blown   = null,
+    clean   = function () { known = blown = null; },
+
+    // utilities
+    New = function (source, descriptors) {
+      var out = isArray(source) ? [] : create(gPO(source));
+      return descriptors ? Object.defineProperties(out, descriptors) : out;
+    },
+
+    // deep copy and merge
+    deepCopy = function deepCopy(source) {
+      var result = New(source);
+      known = [source];
+      blown = [result];
+      deepDefine(result, source);
+      clean();
+      return result;
+    },
+    deepMerge = function (target) {
+      known = [];
+      blown = [];
+      for (var i = 1; i < arguments.length; i++) {
+        known[i - 1] = arguments[i];
+        blown[i - 1] = target;
+      }
+      merge.apply(true, arguments);
+      clean();
+      return target;
+    },
+
+    // shallow copy and merge
+    shallowCopy = function shallowCopy(source) {
+      clean();
+      for (var
+        key,
+        descriptors = {},
+        keys = oKs(source),
+        i = keys.length; i--;
+        set(descriptors, key, gOPD(source, key))
+      ) key = keys[i];
+      return New(source, descriptors);
+    },
+    shallowMerge = function () {
+      clean();
+      return merge.apply(false, arguments);
+    },
+
+    // internal methods
+    isObject = function isObject(value) {
+      /*jshint eqnull: true */
+      return value != null && typeof value === 'object';
+    },
+    shouldCopy = function shouldCopy(value) {
+      /*jshint eqnull: true */
+      index = -1;
+      if (isObject(value)) {
+        if (known == null) return true;
+        index = known.indexOf(value);
+        if (index < 0) return 0 < known.push(value);
+      }
+      return false;
+    },
+    deepDefine = function deepDefine(target, source) {
+      for (var
+        key, descriptor,
+        descriptors = {},
+        keys = oKs(source),
+        i = keys.length; i--;
+      ) {
+        key = keys[i];
+        descriptor = gOPD(source, key);
+        if (VALUE in descriptor) deepValue(descriptor);
+        set(descriptors, key, descriptor);
+      }
+      dPs(target, descriptors);
+    },
+    deepValue = function deepValue(descriptor) {
+      var value = descriptor[VALUE];
+      if (shouldCopy(value)) {
+        descriptor[VALUE] = New(value);
+        deepDefine(descriptor[VALUE], value);
+        blown[known.indexOf(value)] = descriptor[VALUE];
+      } else if (-1 < index && index in blown) {
+        descriptor[VALUE] = blown[index];
+      }
+    },
+    merge = function merge(target) {
+      for (var
+        source,
+        keys, key,
+        value, tvalue,
+        descriptor,
+        deep = this.valueOf(),
+        descriptors = {},
+        i, a = 1;
+        a < arguments.length; a++
+      ) {
+        source = arguments[a];
+        keys = oKs(source);
+        for (i = 0; i < keys.length; i++) {
+          key = keys[i];
+          descriptor = gOPD(source, key);
+          if (hOP.call(target, key)) {
+            if (VALUE in descriptor) {
+              value = descriptor[VALUE];
+              if (shouldCopy(value)) {
+                descriptor = gOPD(target, key);
+                if (VALUE in descriptor) {
+                  tvalue = descriptor[VALUE];
+                  if (isObject(tvalue)) {
+                    merge.call(deep, tvalue, value);
+                  }
+                }
+              }
+            }
+          } else {
+            if (deep && VALUE in descriptor) {
+              deepValue(descriptor);
+            }
+            set(descriptors, key, descriptor);
+          }
+        }
+      }
+      return dPs(target, descriptors);
+    }
+  ;
+
+  return {
+    deep: {
+      copy: deepCopy,
+      merge: deepMerge
+    },
+    shallow: {
+      copy: shallowCopy,
+      merge: shallowMerge
+    }
+  };
+
+}(Object));
+module.exports = cloner;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20791,7 +20791,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -20871,7 +20871,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -21140,7 +21140,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Cloner = __webpack_require__(12);
+var Cloner = __webpack_require__(25);
 
 var ComputerPlayer = function () {
     function ComputerPlayer() {
@@ -21203,7 +21203,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Cloner = __webpack_require__(12);
+var Cloner = __webpack_require__(25);
 var Maxby = __webpack_require__(34);
 var Minby = __webpack_require__(35);
 
@@ -23586,7 +23586,7 @@ function maxBy(array, iteratee) {
 
 module.exports = maxBy;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(14)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26), __webpack_require__(27)(module)))
 
 /***/ }),
 /* 35 */
@@ -25857,7 +25857,7 @@ function minBy(array, iteratee) {
 
 module.exports = minBy;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(14)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26), __webpack_require__(27)(module)))
 
 /***/ }),
 /* 36 */
