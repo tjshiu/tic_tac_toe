@@ -10,4 +10,6 @@ Welcome to my tic-tac-toe game created by me, Tiffany Shiu. The technologies tha
 - Babel
 - Cloner
 - Webpack
+- Lodash.minby
+- Lodash.maxby
 
